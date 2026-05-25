@@ -35,7 +35,7 @@ class HeroSection extends Model
             'bio' => 'Brendingiz uchun kontent strategiya, reels g\'oyalar, vizual uslub va auditoriyani sotuvga olib keladigan SMM tizimini bir joyda yig\'amiz.',
             'hero_image' => 'images/smm-hero.svg',
             'primary_cta_label' => 'Telegramga yozish',
-            'primary_cta_url' => 'https://t.me/username',
+            'primary_cta_url' => 'https://t.me/therealshadmanoff',
             'secondary_cta_label' => 'Konsultatsiya olish',
             'secondary_cta_url' => '#contact-form',
             'tertiary_cta_label' => 'Portfolio ko\'rish',

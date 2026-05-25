@@ -1,1346 +1,1171 @@
-<div class="mirsaar-page" id="home" x-data="{ mobileOpen: false }">
-    <div class="mirsaar-orb mirsaar-orb--left" aria-hidden="true"></div>
-    <div class="mirsaar-orb mirsaar-orb--right" aria-hidden="true"></div>
-    <div class="mirsaar-tech-sky" aria-hidden="true">
-        <div class="mirsaar-tech-sky__mesh"></div>
-        <div class="mirsaar-tech-sky__beam mirsaar-tech-sky__beam--one"></div>
-        <div class="mirsaar-tech-sky__beam mirsaar-tech-sky__beam--two"></div>
-        <div class="mirsaar-tech-sky__beam mirsaar-tech-sky__beam--three"></div>
-        <div class="mirsaar-tech-panel mirsaar-tech-panel--left">
-            <span>const pipeline = leads.sync('mirsaar')</span>
-            <span>deploy.crm({ latency: 'low', uptime: '24/7' })</span>
-            <span>animate.hero({ mode: 'premium', depth: 3 })</span>
+<div>
+<style>
+  :root {
+    --black: #080808;
+    --off-black: #0e0e0e;
+    --panel: #131313;
+    --card: #181818;
+    --border: rgba(255,255,255,0.07);
+    --border-hover: rgba(255,255,255,0.14);
+    --accent: #FF3D3D;
+    --accent2: #FF6B1A;
+    --gold: #E8C97A;
+    --text: #F0EDE8;
+    --muted: rgba(240,237,232,0.45);
+    --dim: rgba(240,237,232,0.2);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 48px;
+    background: rgba(8,8,8,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-brand {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 18px;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .nav-brand em { color: var(--accent); font-style: normal; }
+
+  .nav-links {
+    display: flex; gap: 36px; list-style: none;
+  }
+  .nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+
+  .nav-cta {
+    background: var(--accent);
+    color: #fff;
+    text-decoration: none;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    padding: 10px 22px;
+    border-radius: 100px;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .nav-cta:hover { opacity: 0.88; transform: translateY(-1px); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center;
+    padding: 120px 48px 80px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background: radial-gradient(ellipse 60% 60% at 70% 50%, rgba(255,61,61,0.08) 0%, transparent 65%),
+                radial-gradient(ellipse 40% 40% at 20% 30%, rgba(232,201,122,0.05) 0%, transparent 60%);
+  }
+
+  .hero-grid-lines {
+    position: absolute; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 0%, transparent 80%);
+  }
+
+  .hero-inner {
+    position: relative; z-index: 1;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px;
+    align-items: center; max-width: 1200px; margin: 0 auto; width: 100%;
+  }
+
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent); font-weight: 500;
+    margin-bottom: 28px;
+  }
+  .hero-tag::before {
+    content: '';
+    display: block; width: 6px; height: 6px;
+    background: var(--accent); border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.7); }
+  }
+
+  .hero-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(42px, 5vw, 72px);
+    font-weight: 800;
+    line-height: 1.04;
+    letter-spacing: -0.03em;
+    margin-bottom: 28px;
+  }
+  .hero-title .handle {
+    display: block;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero-title .sub {
+    display: block;
+    color: var(--text);
+  }
+  .hero-title .thin {
+    display: block;
+    color: var(--muted);
+    font-weight: 400;
+    font-size: 0.55em;
+    letter-spacing: -0.01em;
+  }
+
+  .hero-bio {
+    color: var(--muted);
+    font-size: 17px;
+    line-height: 1.7;
+    max-width: 460px;
+    margin-bottom: 40px;
+  }
+
+  .hero-chips {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin-bottom: 40px;
+  }
+  .chip {
+    font-size: 12px; font-weight: 500; letter-spacing: 0.04em;
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    color: var(--muted);
+    background: rgba(255,255,255,0.03);
+  }
+
+  .hero-btns {
+    display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 52px;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--accent);
+    color: #fff; text-decoration: none;
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px;
+    padding: 14px 28px; border-radius: 100px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(255,61,61,0.3); }
+
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: transparent;
+    color: var(--text); text-decoration: none;
+    font-family: 'Syne', sans-serif; font-weight: 600; font-size: 14px;
+    padding: 14px 28px; border-radius: 100px;
+    border: 1px solid var(--border);
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--border-hover); background: rgba(255,255,255,0.04); }
+
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--muted); text-decoration: none;
+    font-size: 14px; padding: 14px 0;
+    transition: color 0.2s;
+  }
+  .btn-ghost:hover { color: var(--text); }
+
+  .stats-row {
+    display: flex; gap: 32px; flex-wrap: wrap;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+  }
+  .stat-item strong {
+    display: block;
+    font-family: 'Syne', sans-serif;
+    font-size: 28px; font-weight: 800;
+    background: linear-gradient(135deg, var(--text) 0%, var(--muted) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .stat-item span {
+    font-size: 12px; color: var(--muted); letter-spacing: 0.04em;
+  }
+
+  /* PROFILE CARD RIGHT */
+  .profile-stage {
+    position: relative;
+  }
+
+  .profile-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    overflow: hidden;
+    position: relative;
+  }
+  .profile-card-media {
+    width: 100%; aspect-ratio: 4/3;
+    background: linear-gradient(135deg, #1a1a1a 0%, #222 100%);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .profile-card-media::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, transparent 40%, var(--card) 100%);
+  }
+  .profile-initials {
+    font-family: 'Syne', sans-serif;
+    font-size: 80px; font-weight: 800;
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent2) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative; z-index: 1;
+  }
+  .profile-card-body {
+    padding: 20px 24px 24px;
+  }
+  .profile-card-body small {
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent);
+  }
+  .profile-card-body strong {
+    display: block; font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 700; margin: 4px 0 2px;
+  }
+  .profile-card-body span { font-size: 14px; color: var(--muted); }
+
+  .float-badge {
+    position: absolute;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 12px 18px;
+    display: flex; align-items: center; gap: 12px;
+    backdrop-filter: blur(8px);
+  }
+  .float-badge--tl { top: -20px; left: -28px; }
+  .float-badge--br { bottom: -20px; right: -28px; }
+  .float-badge-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 13px;
+  }
+  .float-badge-icon.tiktok { background: rgba(0,242,234,0.15); color: #00f2ea; }
+  .float-badge-icon.ig { background: rgba(255,61,61,0.15); color: var(--accent); }
+  .float-badge strong { display: block; font-size: 13px; font-weight: 600; }
+  .float-badge small { font-size: 11px; color: var(--muted); }
+
+  /* SECTION COMMONS */
+  section { max-width: 1200px; margin: 0 auto; padding: 100px 48px; }
+
+  .section-kicker {
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--accent); font-weight: 500;
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    margin-bottom: 20px;
+  }
+  .section-lead {
+    color: var(--muted);
+    font-size: 17px;
+    max-width: 580px;
+    line-height: 1.7;
+  }
+
+  /* SERVICES */
+  .services-wrap { max-width: 1200px; margin: 0 auto; padding: 0 48px 100px; }
+  .services-head { margin-bottom: 56px; }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 2px;
+    background: var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+  }
+
+  .service-card {
+    background: var(--card);
+    padding: 36px 32px;
+    transition: background 0.2s;
+    position: relative;
+  }
+  .service-card:hover { background: #1e1e1e; }
+
+  .service-card-icon {
+    width: 48px; height: 48px; border-radius: 14px;
+    background: rgba(255,61,61,0.1);
+    border: 1px solid rgba(255,61,61,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 14px;
+    color: var(--accent);
+    margin-bottom: 20px;
+  }
+
+  .service-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px; font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .service-card p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+  .service-card-price {
+    display: inline-block;
+    margin-top: 16px;
+    font-family: 'Syne', sans-serif;
+    font-size: 13px; font-weight: 700;
+    color: var(--gold);
+    background: rgba(232,201,122,0.08);
+    padding: 4px 12px; border-radius: 100px;
+    border: 1px solid rgba(232,201,122,0.15);
+  }
+
+  .service-benefit {
+    display: block;
+    margin-top: 10px;
+    font-size: 12px; color: rgba(255,61,61,0.8);
+    letter-spacing: 0.03em;
+  }
+
+  /* PORTFOLIO / CASE SECTION */
+  .cases-wrap { max-width: 1200px; margin: 0 auto; padding: 0 48px 100px; }
+  .cases-head { margin-bottom: 56px; }
+
+  .featured-case {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 60px;
+    align-items: center;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 52px;
+    margin-bottom: 32px;
+    position: relative; overflow: hidden;
+  }
+  .featured-case::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, transparent 0%, var(--accent) 50%, transparent 100%);
+    opacity: 0.4;
+  }
+
+  .case-eyebrow {
+    font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent); font-weight: 500; margin-bottom: 12px;
+  }
+  .case-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 30px; font-weight: 800; line-height: 1.15;
+    letter-spacing: -0.02em; margin-bottom: 16px;
+  }
+  .case-desc { font-size: 15px; color: var(--muted); margin-bottom: 24px; line-height: 1.7; }
+
+  .case-tags {
+    display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 32px;
+  }
+  .case-tag {
+    font-size: 12px; padding: 5px 12px;
+    border: 1px solid var(--border); border-radius: 100px; color: var(--muted);
+  }
+
+  .case-steps { display: flex; flex-direction: column; gap: 14px; }
+  .case-step {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 18px;
+  }
+  .case-step span {
+    font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--accent); font-weight: 500;
+  }
+  .case-step p { font-size: 14px; color: var(--muted); margin-top: 4px; }
+
+  .case-visual {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    aspect-ratio: 4/3;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .case-visual-placeholder {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px; font-weight: 700; letter-spacing: 0.06em; color: var(--dim);
+    text-transform: uppercase;
+  }
+  .case-result-badge {
+    position: absolute; bottom: 16px; right: 16px;
+    background: rgba(255,61,61,0.15);
+    border: 1px solid rgba(255,61,61,0.25);
+    border-radius: 100px;
+    padding: 6px 14px;
+    font-size: 13px; font-weight: 700; color: var(--accent);
+  }
+
+  /* MINI CASES GRID */
+  .mini-cases {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px;
+  }
+  .mini-case {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 28px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .mini-case:hover { border-color: var(--border-hover); transform: translateY(-3px); }
+
+  .mini-case-platform {
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 10px;
+  }
+  .mini-case h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 17px; font-weight: 700; margin-bottom: 8px;
+  }
+  .mini-case-meta {
+    display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px;
+  }
+  .mini-case-niche {
+    font-size: 12px; color: var(--muted); padding: 4px 10px;
+    border: 1px solid var(--border); border-radius: 100px;
+  }
+  .mini-case-result {
+    font-size: 12px; color: var(--accent); font-weight: 700;
+    padding: 4px 10px;
+    border: 1px solid rgba(255,61,61,0.2); border-radius: 100px;
+    background: rgba(255,61,61,0.06);
+  }
+
+  /* CONTACT */
+  .contact-wrap { max-width: 1200px; margin: 0 auto; padding: 0 48px 100px; }
+
+  .contact-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;
+    margin-top: 48px;
+  }
+  .contact-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 28px;
+    text-decoration: none;
+    display: block;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .contact-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+
+  .contact-avatar {
+    width: 48px; height: 48px; border-radius: 14px;
+    background: rgba(255,61,61,0.1);
+    border: 1px solid rgba(255,61,61,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 14px; color: var(--accent);
+    font-family: 'Syne', sans-serif;
+    margin-bottom: 18px;
+  }
+
+  .contact-role {
+    font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 6px;
+  }
+  .contact-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px; font-weight: 700; margin-bottom: 4px; color: var(--text);
+  }
+  .contact-value {
+    display: block; font-size: 14px; font-weight: 600; color: var(--accent); margin-bottom: 6px;
+  }
+  .contact-meta { font-size: 13px; color: var(--muted); }
+
+  /* REVIEWS */
+  .reviews-wrap { max-width: 1200px; margin: 0 auto; padding: 0 48px 100px; }
+  .reviews-head { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 48px; }
+
+  .reviews-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px;
+  }
+  .review-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 32px;
+    position: relative;
+  }
+  .review-stars {
+    display: flex; gap: 3px; margin-bottom: 18px;
+  }
+  .review-stars span { color: var(--gold); font-size: 16px; }
+  .review-quote {
+    font-size: 15px; color: var(--text); line-height: 1.7;
+    margin-bottom: 24px;
+    font-style: italic;
+  }
+  .review-author strong { display: block; font-size: 14px; font-weight: 600; }
+  .review-author span { font-size: 13px; color: var(--muted); }
+
+  /* FORM SECTION */
+  .form-wrap { max-width: 1200px; margin: 0 auto; padding: 0 48px 100px; }
+  .form-inner {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
+  }
+
+  .form-copy .section-title { font-size: clamp(28px, 3vw, 44px); }
+  .form-points { margin-top: 40px; display: flex; flex-direction: column; gap: 16px; }
+  .form-point strong { display: block; font-size: 15px; font-weight: 600; margin-bottom: 3px; }
+  .form-point span { font-size: 14px; color: var(--muted); }
+
+  .form-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 40px;
+  }
+  .form-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px; font-weight: 800; margin-bottom: 8px;
+  }
+  .form-card > p { font-size: 14px; color: var(--muted); margin-bottom: 32px; }
+
+  .field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+
+  .field {
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .field label {
+    font-size: 12px; letter-spacing: 0.04em; color: var(--muted); font-weight: 500;
+  }
+  .field input, .field select, .field textarea {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    border-color: var(--accent);
+  }
+  .field input::placeholder, .field textarea::placeholder { color: var(--dim); }
+  .field select option { background: #1a1a1a; color: var(--text); }
+
+  .submit-btn {
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+    width: 100%;
+    background: var(--accent);
+    color: #fff; border: none; cursor: pointer;
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 15px;
+    padding: 16px 28px; border-radius: 12px;
+    margin-top: 20px;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  .submit-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 60px 48px 40px;
+    max-width: 1200px; margin: 0 auto;
+  }
+  .footer-grid {
+    display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 60px; margin-bottom: 48px;
+  }
+  .footer-brand-name {
+    font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800;
+    margin-bottom: 12px;
+  }
+  .footer-brand-name em { color: var(--accent); font-style: normal; }
+  .footer-lead { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 20px; max-width: 280px; }
+  .footer-email { font-size: 14px; color: var(--accent); text-decoration: none; font-weight: 500; }
+
+  .footer-col h4 {
+    font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted);
+    margin-bottom: 18px;
+  }
+  .footer-links { display: flex; flex-direction: column; gap: 10px; }
+  .footer-links a { color: var(--muted); text-decoration: none; font-size: 14px; transition: color 0.2s; }
+  .footer-links a:hover { color: var(--text); }
+
+  .footer-bottom {
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-bottom p { font-size: 13px; color: var(--dim); }
+  .footer-pill {
+    font-size: 12px; color: var(--muted);
+    padding: 6px 14px; border: 1px solid var(--border); border-radius: 100px;
+  }
+
+  /* ABOUT STRIP */
+  .about-strip {
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 80px 48px;
+    margin: 0;
+  }
+  .about-strip-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+  }
+  .about-quote {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(22px, 3vw, 38px);
+    font-weight: 700; line-height: 1.2; letter-spacing: -0.02em;
+    color: var(--text);
+  }
+  .about-quote em { color: var(--accent); font-style: normal; }
+
+  .about-list { display: flex; flex-direction: column; gap: 20px; }
+  .about-item { display: flex; align-items: flex-start; gap: 14px; }
+  .about-dot {
+    width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
+    margin-top: 7px; flex-shrink: 0;
+  }
+  .about-item strong { display: block; font-size: 15px; font-weight: 600; margin-bottom: 3px; }
+  .about-item span { font-size: 14px; color: var(--muted); }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    .hero { padding: 100px 24px 60px; }
+    .hero-inner { grid-template-columns: 1fr; gap: 48px; }
+    .profile-stage { display: none; }
+    section, .services-wrap, .cases-wrap, .contact-wrap, .reviews-wrap, .form-wrap { padding-left: 24px; padding-right: 24px; }
+    .form-inner { grid-template-columns: 1fr; gap: 48px; }
+    .footer-grid { grid-template-columns: 1fr; gap: 36px; }
+    .featured-case { grid-template-columns: 1fr; padding: 32px; }
+    .about-strip-inner { grid-template-columns: 1fr; gap: 40px; }
+    .about-strip { padding: 60px 24px; }
+    footer { padding: 48px 24px 32px; }
+    .field-grid { grid-template-columns: 1fr; }
+    .reviews-head { flex-direction: column; align-items: flex-start; gap: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="#hero" class="nav-brand">@therealshadman<em>off</em></a>
+  <ul class="nav-links">
+    <li><a href="#services">Xizmatlar</a></li>
+    <li><a href="#cases">Keyslar</a></li>
+    <li><a href="#reviews">Sharhlar</a></li>
+    <li><a href="#contact-form">Kontakt</a></li>
+  </ul>
+  <a href="#contact-form" class="nav-cta">Brief yuborish →</a>
+</nav>
+
+<!-- HERO -->
+<div id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid-lines"></div>
+  <div class="hero-inner" style="position:relative;z-index:1;max-width:1200px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;padding:120px 48px 80px;">
+
+    <div>
+      <p class="hero-tag">SMM Targetolog · Content Maker</p>
+
+      <h1 class="hero-title">
+        <span class="handle">@therealshadmanoff</span>
+        <span class="sub">SMM, Reels &amp;</span>
+        <span class="thin">Target reklama mutaxassisi</span>
+      </h1>
+
+      <p class="hero-bio">
+        TikTok, Instagram va Telegram uchun kontent strategiya, Reels production, targetli reklama va analitika — hammasi bitta aniq tizimda. Har bir post va kampaniya biznes natijaga ulanadi.
+      </p>
+
+      <div class="hero-chips">
+        <span class="chip">Instagram Reels</span>
+        <span class="chip">TikTok Content</span>
+        <span class="chip">Target Reklama</span>
+        <span class="chip">Kontent Strategiya</span>
+        <span class="chip">Analitika</span>
+        <span class="chip">Personal Brand</span>
+      </div>
+
+      <div class="hero-btns">
+        <a href="#contact-form" class="btn-primary">Brief yuborish →</a>
+        <a href="#cases" class="btn-secondary">Keyslarni ko'rish</a>
+        <a href="#services" class="btn-ghost">Xizmatlar ↓</a>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-item">
+          <strong>120+</strong>
+          <span>Loyiha</span>
         </div>
-        <div class="mirsaar-tech-panel mirsaar-tech-panel--right">
-            <span>&lt;Dashboard /&gt; ready for launch</span>
-            <span>git commit -m "ship premium flow"</span>
-            <span>admin.monitor({ services, inquiries, reviews })</span>
+        <div class="stat-item">
+          <strong>4.8×</strong>
+          <span>O'rtacha ROI</span>
         </div>
-        <div class="mirsaar-tech-orbit"></div>
+        <div class="stat-item">
+          <strong>3 yil</strong>
+          <span>Tajriba</span>
+        </div>
+        <div class="stat-item">
+          <strong>98%</strong>
+          <span>Qaytuvchi mijozlar</span>
+        </div>
+      </div>
     </div>
 
-    <div class="mirsaar-shell">
-        <div class="mirsaar-nav-shell">
-                <header class="mirsaar-nav">
-                    <a href="#home" class="mirsaar-brand" aria-label="Mirsaar">
-                        <span class="mirsaar-brand-mark" aria-hidden="true">
-                            <svg viewBox="0 0 64 64" fill="none" role="presentation">
-                                <circle cx="32" cy="32" r="29" stroke="currentColor" stroke-width="2.5" />
-                                <path d="M18 39L28.5 22H35L25 42" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
-                                <path d="M30 42L39 22H46L36.5 42" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
-                            </svg>
-                        </span>
-
-                        <span class="mirsaar-brand-copy">
-                            <strong>Mirsaar</strong>
-                            <small>просто. точно. мощно.</small>
-                        </span>
-                    </a>
-
-                    <nav class="mirsaar-nav-links" aria-label="Primary navigation">
-                        @foreach ($navItems as $item)
-                            <a href="{{ $item['href'] }}" class="mirsaar-nav-link">{{ $item['label'] }}</a>
-                        @endforeach
-                    </nav>
-
-                    <div class="mirsaar-nav-side">
-                        <a href="{{ route('admin.login') }}" class="mirsaar-admin-link">Admin</a>
-
-                        <div class="mirsaar-lang-switch" aria-label="Language switcher">
-                            @foreach ($languages as $language)
-                                <button
-                                    type="button"
-                                    class="mirsaar-lang-pill {{ $language['active'] ? 'is-active' : '' }}"
-                                    aria-pressed="{{ $language['active'] ? 'true' : 'false' }}"
-                                >
-                                    {{ $language['label'] }}
-                                </button>
-                            @endforeach
-                        </div>
-
-                        <button
-                            type="button"
-                            class="mirsaar-menu-toggle"
-                            aria-controls="mobile-menu"
-                            :aria-expanded="mobileOpen.toString()"
-                            @click="mobileOpen = !mobileOpen"
-                        >
-                            <span class="sr-only">Open menu</span>
-                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M4 7H20" stroke="currentColor" stroke-linecap="round" stroke-width="2" />
-                                <path d="M4 12H20" stroke="currentColor" stroke-linecap="round" stroke-width="2" />
-                                <path d="M8 17H20" stroke="currentColor" stroke-linecap="round" stroke-width="2" />
-                            </svg>
-                        </button>
-                    </div>
-                </header>
-
-                <div
-                    id="mobile-menu"
-                    class="mirsaar-mobile-menu"
-                    x-cloak
-                    x-show="mobileOpen"
-                    x-transition.opacity.duration.300ms
-                    x-transition.scale.origin.top.duration.300ms
-                    @click.outside="mobileOpen = false"
-                >
-                    @foreach ($navItems as $item)
-                        <a href="{{ $item['href'] }}" class="mirsaar-mobile-link" @click="mobileOpen = false">
-                            {{ $item['label'] }}
-                        </a>
-                    @endforeach
-
-                    <a href="{{ route('admin.login') }}" class="mirsaar-mobile-link mirsaar-mobile-link--admin" @click="mobileOpen = false">
-                        Admin panel
-                    </a>
-
-                    <div class="mirsaar-mobile-lang-row">
-                        @foreach ($languages as $language)
-                            <button
-                                type="button"
-                                class="mirsaar-lang-pill {{ $language['active'] ? 'is-active' : '' }}"
-                                aria-pressed="{{ $language['active'] ? 'true' : 'false' }}"
-                            >
-                                {{ $language['label'] }}
-                            </button>
-                        @endforeach
-                    </div>
-                </div>
+    <!-- PROFILE CARD -->
+    <div class="profile-stage">
+      <div class="profile-card">
+        <div class="profile-card-media">
+          <span class="profile-initials">SH</span>
         </div>
-
-        <section class="mirsaar-hero mirsaar-hero--smm">
-            <div class="mirsaar-hero-grid">
-                <div class="mirsaar-copy">
-                    <p class="mirsaar-kicker mirsaar-reveal">
-                        <span class="mirsaar-kicker-dot" aria-hidden="true"></span>
-                        {{ $hero['eyebrow'] }}
-                    </p>
-
-                    <h1 class="mirsaar-title mirsaar-title--smm mirsaar-reveal mirsaar-reveal--delay-1">
-                        <span>{{ $hero['specialist_name'] }}</span>
-                        <em>{{ $hero['headline'] }}</em>
-                    </h1>
-
-                    <p class="mirsaar-lead mirsaar-reveal mirsaar-reveal--delay-2">
-                        {{ $hero['bio'] }}
-                    </p>
-
-                    <div class="mirsaar-chip-row mirsaar-reveal mirsaar-reveal--delay-2">
-                        @foreach ($heroTags as $tag)
-                            <span class="mirsaar-info-chip">{{ $tag }}</span>
-                        @endforeach
-                    </div>
-
-                    <div class="mirsaar-cta-row mirsaar-reveal mirsaar-reveal--delay-3">
-                        <a href="{{ $hero['primary_cta_url'] }}" class="mirsaar-button mirsaar-button--primary">
-                            {{ $hero['primary_cta_label'] }}
-                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M7 17L17 7" stroke="currentColor" stroke-linecap="round" stroke-width="2" />
-                                <path d="M9 7H17V15" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
-                            </svg>
-                        </a>
-
-                        <a href="{{ $hero['secondary_cta_url'] }}" class="mirsaar-button mirsaar-button--secondary">
-                            {{ $hero['secondary_cta_label'] }}
-                        </a>
-
-                        <a href="{{ $hero['tertiary_cta_url'] }}" class="mirsaar-button mirsaar-button--text">
-                            {{ $hero['tertiary_cta_label'] }}
-                        </a>
-                    </div>
-
-                    <div class="mirsaar-stat-grid mirsaar-reveal mirsaar-reveal--delay-4">
-                        @foreach ($stats as $stat)
-                            <article class="mirsaar-stat-card">
-                                <p class="mirsaar-stat-value">{{ $stat['value'] }}</p>
-                                <p class="mirsaar-stat-label">{{ $stat['label'] }}</p>
-                            </article>
-                        @endforeach
-                    </div>
-                </div>
-
-                <div class="mirsaar-profile-stage mirsaar-reveal mirsaar-reveal--delay-2">
-                    <article class="mirsaar-profile-card">
-                        <div class="mirsaar-profile-card__media">
-                            @if ($hero['hero_image_url'])
-                                <img src="{{ $hero['hero_image_url'] }}" alt="{{ $hero['specialist_name'] }}">
-                            @else
-                                <div class="mirsaar-profile-card__fallback" aria-hidden="true">
-                                    {{ strtoupper(mb_substr($hero['specialist_name'], 0, 1)) }}
-                                </div>
-                            @endif
-                        </div>
-
-                        <div class="mirsaar-profile-card__body">
-                            <p>SMM growth system</p>
-                            <strong>{{ $hero['specialist_name'] }}</strong>
-                            <span>{{ $hero['headline'] }}</span>
-                        </div>
-                    </article>
-
-                    <article class="mirsaar-profile-floating mirsaar-profile-floating--top">
-                        <span>IG</span>
-                        <div>
-                            <strong>Kontent strategiya</strong>
-                            <small>post, reels, stories ritmi</small>
-                        </div>
-                    </article>
-
-                    <article class="mirsaar-profile-floating mirsaar-profile-floating--bottom">
-                        <span>ROI</span>
-                        <div>
-                            <strong>Lead va reach</strong>
-                            <small>analitika asosida o'sish</small>
-                        </div>
-                    </article>
-                </div>
-            </div>
-
-            <div class="mirsaar-scroll-hint">
-                <span aria-hidden="true"></span>
-                portfolio va xizmatlar pastda davom etadi
-            </div>
-        </section>
-
-        @if (false)
-        <section class="mirsaar-hero mirsaar-hero--legacy" hidden>
-            <div class="mirsaar-hero-grid">
-                <div class="mirsaar-copy">
-                    <p class="mirsaar-kicker mirsaar-reveal">
-                        <span class="mirsaar-kicker-dot" aria-hidden="true"></span>
-                        software studio / движение кода / эффект полного погружения
-                    </p>
-
-                    <h1 class="mirsaar-title mirsaar-reveal mirsaar-reveal--delay-1">
-
-                        <span>MIRSAAR</span>
-                        <em>digital</em>
-                        <span>решения для современного бизнеса.</span>
-                    </h1>
-
-                    <p class="mirsaar-lead mirsaar-reveal mirsaar-reveal--delay-2">
-                        MIRSAAR — это команда специалистов в области веб-разработки, дизайна и цифровых технологий.
-                    Мы помогаем компаниям выходить на новый уровень с помощью современных IT-решений.
-                    Наша цель — не просто создать продукт, а дать бизнесу инструмент, который реально работает и приносит прибыль.
-                    Мы используем современные технологии, такие как:
-
-                        <span>Software</span>
-                        <em>Mirsaar</em>
-                        <span>для премиального первого экрана</span>
-                    </h1>
-
-                    <div class="mirsaar-chip-row mirsaar-reveal mirsaar-reveal--delay-2">
-                        @foreach ($heroTags as $tag)
-                            <span class="mirsaar-info-chip">{{ $tag }}</span>
-                        @endforeach
-                    </div>
-
-                    <div class="mirsaar-cta-row mirsaar-reveal mirsaar-reveal--delay-3">
-                        <a href="#contact" class="mirsaar-button mirsaar-button--primary">
-                            Начать проект
-                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M7 17L17 7" stroke="currentColor" stroke-linecap="round" stroke-width="2" />
-                                <path d="M9 7H17V15" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
-                            </svg>
-                        </a>
-
-                        <a href="#projects" class="mirsaar-button mirsaar-button--secondary">
-                            Посмотреть проекты
-                        </a>
-                    </div>
-
-                    <div class="mirsaar-stat-grid mirsaar-reveal mirsaar-reveal--delay-4">
-                        @foreach ($stats as $stat)
-                            <article class="mirsaar-stat-card">
-                                <p class="mirsaar-stat-value">{{ $stat['value'] }}</p>
-                                <p class="mirsaar-stat-label">{{ $stat['label'] }}</p>
-                            </article>
-                        @endforeach
-                    </div>
-                </div>
-
-                <div class="mirsaar-stage mirsaar-reveal mirsaar-reveal--delay-2">
-                    <article class="mirsaar-float-card mirsaar-float-card--top">
-                        <span class="mirsaar-float-icon" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="none">
-                                <path d="M12 3L19 7V17L12 21L5 17V7L12 3Z" stroke="currentColor" stroke-linejoin="round" stroke-width="1.8" />
-                                <path d="M12 8V12L15 14" stroke="currentColor" stroke-linecap="round" stroke-width="1.8" />
-                            </svg>
-                        </span>
-                        <div>
-                            <p class="mirsaar-float-label">Быстрый запуск</p>
-                            <strong>Мгновенный деплой</strong>
-                        </div>
-                    </article>
-
-
-                    <article class="mirsaar-stage-main">
-                        <div class="mirsaar-stage-top">
-                            <div class="mirsaar-stage-status">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                                <p>Сборка активна</p>
-                            </div>
-
-                            <span class="mirsaar-stage-badge">MIRSAAR</span>
-                        </div>
-
-                        <div class="mirsaar-stage-body">
-                            <div class="mirsaar-stage-heading">
-                                <p class="mirsaar-stage-overline">Система запуска ПО</p>
-                                <h2 class="mirsaar-stage-title">Полноэкранный header с анимацией на основе кода</h2>
-                            </div>
-
-                            <div class="mirsaar-stage-emblem" aria-hidden="true">
-                                <div class="mirsaar-stage-core">
-                                    <svg viewBox="0 0 72 72" fill="none">
-                                        <circle cx="36" cy="36" r="31" stroke="currentColor" stroke-width="2.4" />
-                                        <path d="M22 44L32.5 25H39L29.5 48" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.4" />
-                                        <path d="M34 48L43.5 25H50L40.5 48" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.4" />
-                                    </svg>
-                                </div>
-                            </div>
-
-                            <ul class="mirsaar-stage-list">
-                                <li>
-                                    <span class="mirsaar-list-icon" aria-hidden="true">
-                                        <svg viewBox="0 0 24 24" fill="none">
-                                            <path d="M4 12H20" stroke="currentColor" stroke-linecap="round" stroke-width="1.8" />
-                                            <path d="M12 4V20" stroke="currentColor" stroke-linecap="round" stroke-width="1.8" />
-                                        </svg>
-                                    </span>
-                                    <div>
-                                        <strong>Полноширинный navbar</strong>
-                                        <p>Улучшена sticky-навигация, вход в админ-панель перенесён в правый верхний угол.</p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <span class="mirsaar-list-icon" aria-hidden="true">
-                                        <svg viewBox="0 0 24 24" fill="none">
-                                            <path d="M12 3L20 7.5V16.5L12 21L4 16.5V7.5L12 3Z" stroke="currentColor" stroke-linejoin="round" stroke-width="1.8" />
-                                            <path d="M8.5 12L11 14.5L15.5 10" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" />
-                                        </svg>
-                                    </span>
-                                    <div>
-                                        <strong>Анимации кода и glow-эффекты</strong>
-                                        <p>Beam, панели и grid-анимации в стиле разработки усиливают визуальное восприятие.</p>
-                                    </div>
-                                </li>
-                                <li>
-                                    <span class="mirsaar-list-icon" aria-hidden="true">
-                                        <svg viewBox="0 0 24 24" fill="none">
-                                            <path d="M6 18L18 6" stroke="currentColor" stroke-linecap="round" stroke-width="1.8" />
-                                            <path d="M9 6H18V15" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" />
-                                        </svg>
-                                    </span>
-                                    <div>
-                                        <strong>Адаптивный первый экран</strong>
-                                        <p>На десктопе — сценическая композиция, на мобильных — аккуратный stacked hero.</p>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </article>
-
-
-                    <div class="mirsaar-stage-ring" aria-hidden="true"></div>
-                </div>
-            </div>
-
-            <div class="mirsaar-scroll-hint">
-                <span aria-hidden="true"></span>
-                premium details pastda davom etadi
-            </div>
-        </section>
-
-        @endif
-
-        <section class="mirsaar-detail-section">
-            <article class="mirsaar-brand-showcase">
-                <div class="mirsaar-brand-pattern mirsaar-brand-pattern--tl" aria-hidden="true">
-                    <svg viewBox="0 0 64 64" fill="none">
-                        <circle cx="32" cy="32" r="29" stroke="currentColor" stroke-width="1.8" />
-                        <path d="M18 39L28.5 22H35L25 42" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" />
-                        <path d="M30 42L39 22H46L36.5 42" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" />
-                    </svg>
-                </div>
-                <div class="mirsaar-brand-pattern mirsaar-brand-pattern--tr" aria-hidden="true">
-                    <svg viewBox="0 0 64 64" fill="none">
-                        <circle cx="32" cy="32" r="29" stroke="currentColor" stroke-width="1.8" />
-                        <path d="M18 39L28.5 22H35L25 42" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" />
-                        <path d="M30 42L39 22H46L36.5 42" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" />
-                    </svg>
-                </div>
-                <div class="mirsaar-brand-pattern mirsaar-brand-pattern--bl" aria-hidden="true">
-                    <svg viewBox="0 0 64 64" fill="none">
-                        <circle cx="32" cy="32" r="29" stroke="currentColor" stroke-width="1.8" />
-                        <path d="M18 39L28.5 22H35L25 42" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" />
-                        <path d="M30 42L39 22H46L36.5 42" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" />
-                    </svg>
-                </div>
-                <div class="mirsaar-brand-pattern mirsaar-brand-pattern--br" aria-hidden="true">
-                    <svg viewBox="0 0 64 64" fill="none">
-                        <circle cx="32" cy="32" r="29" stroke="currentColor" stroke-width="1.8" />
-                        <path d="M18 39L28.5 22H35L25 42" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" />
-                        <path d="M30 42L39 22H46L36.5 42" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" />
-                    </svg>
-                </div>
-
-                <div class="mirsaar-brand-showcase-inner">
-                    <span class="mirsaar-brand-showcase-mark" aria-hidden="true">
-                        <svg viewBox="0 0 64 64" fill="none">
-                            <circle cx="32" cy="32" r="29" stroke="currentColor" stroke-width="2.5" />
-                            <path d="M18 39L28.5 22H35L25 42" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
-                            <path d="M30 42L39 22H46L36.5 42" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
-                        </svg>
-                    </span>
-
-                    <p class="mirsaar-brand-showcase-kicker">nima uchun SMM bilan ishlashadi</p>
-
-                    <h2 class="mirsaar-brand-showcase-title">
-                        <span>SMM</span>
-                        <em>growth</em>
-                    </h2>
-
-                    <p class="mirsaar-brand-showcase-copy">
-                        Strategiya, kontent plan, reels, target reklama va analitika bitta ritmda ishlaydi.
-                        Har bir post va kampaniya biznes maqsadga ulanadi: reach, lead, sotuv yoki personal brand.
-                    </p>
-
-                    <div class="mirsaar-brand-showcase-actions">
-                        <a href="#contact-form" class="mirsaar-showcase-button mirsaar-showcase-button--primary">
-                            Konsultatsiya olish
-                        </a>
-                        <a href="#services" class="mirsaar-showcase-button mirsaar-showcase-button--secondary">
-                            Xizmatlar
-                        </a>
-                        <a href="#projects" class="mirsaar-showcase-button mirsaar-showcase-button--dark">
-                            Keyslar
-                        </a>
-                    </div>
-                </div>
-            </article>
-
-            <article class="mirsaar-story-section" id="services">
-                <div class="mirsaar-story-pattern mirsaar-story-pattern--left" aria-hidden="true">
-                    <svg viewBox="0 0 64 64" fill="none">
-                        <circle cx="32" cy="32" r="29" stroke="currentColor" stroke-width="1.8" />
-                        <path d="M18 39L28.5 22H35L25 42" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" />
-                        <path d="M30 42L39 22H46L36.5 42" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" />
-                    </svg>
-                </div>
-                <div class="mirsaar-story-pattern mirsaar-story-pattern--right" aria-hidden="true">
-                    <svg viewBox="0 0 64 64" fill="none">
-                        <circle cx="32" cy="32" r="29" stroke="currentColor" stroke-width="1.8" />
-                        <path d="M18 39L28.5 22H35L25 42" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" />
-                        <path d="M30 42L39 22H46L36.5 42" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" />
-                    </svg>
-                </div>
-
-                <div class="mirsaar-story-grid mirsaar-smm-services">
-                    <div class="mirsaar-story-copy">
-                        <p class="mirsaar-section-kicker">xizmatlar</p>
-                        <h2 class="mirsaar-story-title">SMM strategiya, kontent va reklamani bitta aniq tizimga yig'amiz.</h2>
-                        <p class="mirsaar-story-lead">
-                            Xizmatlar admin paneldan boshqariladi: nomi, narxi, icon kaliti, benefit va aktiv holati o'zgarsa,
-                            asosiy sahifa ham darhol yangilanadi.
-                        </p>
-
-                        <article class="mirsaar-story-note">
-                            <span class="mirsaar-story-note-icon" aria-hidden="true">
-                                <svg viewBox="0 0 24 24" fill="none">
-                                    <path d="M5 12H19" stroke="currentColor" stroke-linecap="round" stroke-width="1.8" />
-                                    <path d="M12 5V19" stroke="currentColor" stroke-linecap="round" stroke-width="1.8" />
-                                </svg>
-                            </span>
-                            <p>
-                                Har bir xizmat biznes maqsadga bog'lanadi: reach, lead, sotuv, personal brand yoki auditoriya ishonchi.
-                            </p>
-                        </article>
-
-                        <div class="mirsaar-story-points">
-                            @foreach ($stats as $metric)
-                                <article class="mirsaar-story-point">
-                                    <strong>{{ $metric['value'] }}</strong>
-                                    <span>{{ $metric['label'] }}</span>
-                                </article>
-                            @endforeach
-                        </div>
-                    </div>
-
-                    <div class="mirsaar-service-grid">
-                        @foreach ($services as $service)
-                            <article class="mirsaar-service-card">
-                                <div class="mirsaar-service-card__top">
-                                    <span class="mirsaar-service-card__icon">{{ strtoupper(mb_substr($service['icon'] ?? $service['title'], 0, 2)) }}</span>
-                                    @if (! empty($service['price']))
-                                        <strong class="mirsaar-service-card__price">{{ $service['price'] }}</strong>
-                                    @endif
-                                </div>
-
-                                <h3>{{ $service['title'] }}</h3>
-
-                                @if (! empty($service['description']))
-                                    <p>{{ $service['description'] }}</p>
-                                @endif
-
-                                @if (! empty($service['benefit']))
-                                    <span class="mirsaar-service-card__benefit">{{ $service['benefit'] }}</span>
-                                @endif
-                            </article>
-                        @endforeach
-                    </div>
-                </div>
-
-                @if (false)
-                <div class="mirsaar-story-grid">
-                    <div class="mirsaar-story-copy">
-                        <p class="mirsaar-section-kicker">about studio</p>
-                        <h2 class="mirsaar-story-title">Изысканность и точность работают вместе в цифровом опыте.</h2>
-                        <p class="mirsaar-story-lead">
-                            Этот раздел продолжает премиальное настроение, не перегружая контент. Мы объединяем дизайн, 
-                            техническую основу и презентацию в едином спокойном ритме
-                        </p>
-
-                        <article class="mirsaar-story-note">
-                            <span class="mirsaar-story-note-icon" aria-hidden="true">
-                                <svg viewBox="0 0 24 24" fill="none">
-                                    <path d="M12 4L14.3 8.2L19 8.8L15.6 12.1L16.4 16.8L12 14.5L7.6 16.8L8.4 12.1L5 8.8L9.7 8.2L12 4Z" stroke="currentColor" stroke-linejoin="round" stroke-width="1.8" />
-                                </svg>
-                            </span>
-                            <p>
-                               Mirsaar создаёт премиальные веб-решения: визуал — это не просто эстетика,
-                             а продуманная система, которая усиливает восприятие бренда и делает его дороже в глазах клиента.
-                            </p>
-                        </article>
-
-                        <article class="mirsaar-story-quote">
-                            <p>
-                                «Хорошая страница — это не просто оформление.
-                                Она создаёт доверие у пользователя и формирует уровень бренда.»
-                            </p>
-                        </article>
-
-                        <div class="mirsaar-story-points">
-                            @foreach ($storyMetrics as $metric)
-                                <article class="mirsaar-story-point" id="{{ $metric['id'] }}">
-                                    <strong>{{ $metric['value'] }}</strong>
-                                    <span>{{ $metric['label'] }}</span>
-                                </article>
-                            @endforeach
-                        </div>
-                    </div>
-
-                    <div class="mirsaar-story-visual">
-                        <div class="mirsaar-story-glow" aria-hidden="true"></div>
-
-                        <article class="mirsaar-device-stage">
-                            <div class="mirsaar-visual-badge">premium composition</div>
-
-                            <div class="mirsaar-device-desktop">
-                                <div class="mirsaar-device-topbar">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                </div>
-                                <div class="mirsaar-device-hero-band"></div>
-                                <div class="mirsaar-device-grid">
-                                    <div class="mirsaar-device-panel mirsaar-device-panel--large"></div>
-                                    <div class="mirsaar-device-panel"></div>
-                                    <div class="mirsaar-device-panel"></div>
-                                </div>
-                            </div>
-
-                            <div class="mirsaar-device-tablet">
-                                <div class="mirsaar-device-screen">
-                                    <div class="mirsaar-device-line"></div>
-                                    <div class="mirsaar-device-line"></div>
-                                    <div class="mirsaar-device-line mirsaar-device-line--short"></div>
-                                </div>
-                            </div>
-
-                            <div class="mirsaar-device-phone">
-                                <div class="mirsaar-device-screen">
-                                    <div class="mirsaar-device-dot"></div>
-                                    <div class="mirsaar-device-stack"></div>
-                                    <div class="mirsaar-device-stack mirsaar-device-stack--small"></div>
-                                </div>
-                            </div>
-                        </article>
-                    </div>
-                </div>
-                @endif
-            </article>
-
-            @if (false)
-            <article class="mirsaar-craft-section" id="support">
-                <div class="mirsaar-craft-pattern mirsaar-craft-pattern--left" aria-hidden="true">
-                    <svg viewBox="0 0 64 64" fill="none">
-                        <circle cx="32" cy="32" r="29" stroke="currentColor" stroke-width="1.8" />
-                        <path d="M18 39L28.5 22H35L25 42" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" />
-                        <path d="M30 42L39 22H46L36.5 42" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" />
-                    </svg>
-                </div>
-                <div class="mirsaar-craft-pattern mirsaar-craft-pattern--right" aria-hidden="true">
-                    <svg viewBox="0 0 64 64" fill="none">
-                        <circle cx="32" cy="32" r="29" stroke="currentColor" stroke-width="1.8" />
-                        <path d="M18 39L28.5 22H35L25 42" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" />
-                        <path d="M30 42L39 22H46L36.5 42" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" />
-                    </svg>
-                </div>
-
-                <div class="mirsaar-craft-grid">
-                    <div class="mirsaar-craft-copy">
-                        <p class="mirsaar-section-kicker">about company</p>
-                        <h2 class="mirsaar-craft-title">Raqam ichida san'at, taqdimotda esa premium sokinlik.</h2>
-                        <p class="mirsaar-craft-lead">
-                            Screenshot kayfiyatidagi ushbu blok Mirsaar uslubiga moslashtirildi: kontent ixcham,
-                            CTA bitta, lekin ranglar, qatlamlar va mayin motionlar hisobiga sahifa qimmat va nazoratli ko'rinadi.
-                        </p>
-
-                        <div class="mirsaar-craft-stack">
-                            <article class="mirsaar-craft-card">
-                                <span class="mirsaar-feature-icon" aria-hidden="true">
-                                    <svg viewBox="0 0 24 24" fill="none">
-                                        <path d="M12 4L14.3 8.2L19 8.8L15.6 12.1L16.4 16.8L12 14.5L7.6 16.8L8.4 12.1L5 8.8L9.7 8.2L12 4Z" stroke="currentColor" stroke-linejoin="round" stroke-width="1.8" />
-                                    </svg>
-                                </span>
-                                <div>
-                                    <small>премиальная композиция</small>
-                                    <strong>Меньше кнопок — больше доверия</strong>
-                                    <p>Пользователь не перегружен выбором, а интерфейс остаётся управляемым и создаёт ощущение премиальности.</p>
-                                </div>
-                            </article>
-
-                            <article class="mirsaar-craft-card is-featured">
-                                <span class="mirsaar-feature-icon" aria-hidden="true">
-                                    <svg viewBox="0 0 24 24" fill="none">
-                                        <path d="M12 3L20 7.5V16.5L12 21L4 16.5V7.5L12 3Z" stroke="currentColor" stroke-linejoin="round" stroke-width="1.8" />
-                                        <path d="M12 8V12L15 14" stroke="currentColor" stroke-linecap="round" stroke-width="1.8" />
-                                    </svg>
-                                </span>
-                                <div>
-                                    <small>фирменное направление</small>
-                                    <strong>Дизайн и технология работают в одном ритме</strong>
-                                    <p>Типографика, цвет, glow и анимации дополняют друг друга, усиливая ощущение ценности бренда.</p>
-                                </div>
-                            </article>
-
-                            <article class="mirsaar-craft-card">
-                                <span class="mirsaar-feature-icon" aria-hidden="true">
-                                    <svg viewBox="0 0 24 24" fill="none">
-                                        <path d="M12 3L19 6V11.8C19 15.1 16.9 18.1 12 21C7.1 18.1 5 15.1 5 11.8V6L12 3Z" stroke="currentColor" stroke-linejoin="round" stroke-width="1.8" />
-                                        <path d="M9 12.2L11.2 14.4L15.2 10.4" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" />
-                                    </svg>
-                                </span>
-                                <div>
-                                    <small>signature direction</small>
-                                    <strong>Единый ритм дизайна и технологий</strong>
-                                    <p>Шрифты, цвета и анимации синхронизированы, формируя цельный и более дорогой визуальный образ.</p>
-                                </div>
-                            </article>
-                        </div>
-
-                        <a href="#contact" class="mirsaar-button mirsaar-button--primary mirsaar-craft-button">
-                            Подробнее о подходе
-                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M7 17L17 7" stroke="currentColor" stroke-linecap="round" stroke-width="2" />
-                                <path d="M9 7H17V15" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
-                            </svg>
-                        </a>
-                    </div>
-
-                    <div class="mirsaar-craft-visual">
-                        <div class="mirsaar-craft-glow" aria-hidden="true"></div>
-
-                        <div class="mirsaar-craft-stage">
-                            <div class="mirsaar-craft-pill-row" aria-hidden="true">
-                                <span>Art direction</span>
-                                <span>UX clarity</span>
-                                <span>Code motion</span>
-                            </div>
-
-                            <article class="mirsaar-craft-desktop">
-                                <div class="mirsaar-craft-desktop-top">
-                                    <span></span>
-                                    <span></span>
-                                    <span></span>
-                                    <p>mirsaar signature layout</p>
-                                </div>
-
-                                <div class="mirsaar-craft-screen">
-                                    <div class="mirsaar-craft-screen-sidebar">
-                                        <div class="mirsaar-craft-line"></div>
-                                        <div class="mirsaar-craft-line"></div>
-                                        <div class="mirsaar-craft-line mirsaar-craft-line--short"></div>
-                                    </div>
-
-                                    <div class="mirsaar-craft-main">
-                                        <div class="mirsaar-craft-hero-band"></div>
-
-                                        <div class="mirsaar-craft-preview-grid">
-                                            <div class="mirsaar-craft-preview-panel mirsaar-craft-preview-panel--xl"></div>
-                                            <div class="mirsaar-craft-preview-panel"></div>
-                                            <div class="mirsaar-craft-preview-panel mirsaar-craft-preview-panel--accent"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </article>
-
-                            <article class="mirsaar-craft-mobile">
-                                <div class="mirsaar-craft-mobile-screen">
-                                    <div class="mirsaar-craft-mobile-hero"></div>
-                                    <div class="mirsaar-craft-mobile-stack"></div>
-                                    <div class="mirsaar-craft-mobile-stack mirsaar-craft-mobile-stack--small"></div>
-                                    <div class="mirsaar-craft-mobile-stack mirsaar-craft-mobile-stack--small"></div>
-                                </div>
-                            </article>
-
-                            <article class="mirsaar-craft-float mirsaar-craft-float--left">
-                                <strong>Искусство в цифре</strong>
-                                <p>Премиальная анимация и спокойная композиция</p>
-                            </article>
-
-                            <article class="mirsaar-craft-float mirsaar-craft-float--right">
-                                <strong>01 основное действие</strong>
-                                <p>Пользовательский путь остаётся чистым и без лишних отвлечений</p>
-                            </article>
-
-                            <div class="mirsaar-craft-ring" aria-hidden="true"></div>
-                        </div>
-                    </div>
-                </div>
-            </article>
-            @endif
-
-            <article class="mirsaar-works-section" id="projects">
-                <div class="mirsaar-works-head mirsaar-reveal">
-                    <p class="mirsaar-works-kicker">keyslar / portfolio</p>
-                    <h2 class="mirsaar-works-title">SMM CASE STUDY</h2>
-                    <p class="mirsaar-works-lead">
-                        Admin paneldan boshqariladigan portfolio: klient niche, oldingi holat,
-                        qilingan ish, platforma va natija sahifada case-study formatida chiqadi.
-                    </p>
-                </div>
-
-                @php($projectItems = collect($portfolioRows)->flatten(1))
-                @php($crmProject = $projectItems->firstWhere('is_featured', true) ?? $projectItems->first())
-
-                @if ($crmProject)
-                <div class="mirsaar-crm-feature mirsaar-reveal mirsaar-reveal--delay-1">
-                    <div class="mirsaar-crm-feature__copy">
-                        <p class="mirsaar-crm-feature__eyebrow">{{ $crmProject['platform'] ?? $crmProject['label'] }}</p>
-                        <h3 class="mirsaar-crm-feature__title">{{ $crmProject['title'] }}</h3>
-                        <p class="mirsaar-crm-feature__lead">
-                           {{ $crmProject['description'] ?? 'Case preview yirik blokda ko\'rinadi, pastdagi lenta esa SMM natijalarini premium uslubda davom ettiradi.' }}
-                        </p>
-                        
-
-                        <div class="mirsaar-crm-feature__meta">
-                            @if (! empty($crmProject['client_niche']))
-                                <span>{{ $crmProject['client_niche'] }}</span>
-                            @endif
-                            @if (! empty($crmProject['platform']))
-                                <span>{{ $crmProject['platform'] }}</span>
-                            @endif
-                            @if (! empty($crmProject['result']))
-                                <span>{{ $crmProject['result'] }}</span>
-                            @endif
-                        </div>
-
-                        <div class="mirsaar-case-steps">
-                            @if (! empty($crmProject['before_state']))
-                                <article class="mirsaar-case-step">
-                                    <span>Oldingi holat</span>
-                                    <p>{{ $crmProject['before_state'] }}</p>
-                                </article>
-                            @endif
-                            @if (! empty($crmProject['work_done']))
-                                <article class="mirsaar-case-step">
-                                    <span>Qilingan ish</span>
-                                    <p>{{ $crmProject['work_done'] }}</p>
-                                </article>
-                            @endif
-                        </div>
-
-                        @if (false)
-                  <div class="mirsaar-crm-feature__meta">
-                            <span>Воронка продаж</span>
-                            <span>Отслеживание лидов</span>
-                            <span>Активность клиентов</span>
-                    </div>
-                        @endif
-                    </div>
-
-                    <div class="mirsaar-crm-feature__stage">
-                        <div class="mirsaar-crm-feature__window">
-                            <div class="mirsaar-crm-feature__window-bar" aria-hidden="true">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </div>
-
-                            <div class="mirsaar-crm-feature__window-screen">
-                                <img
-                                    src="{{ asset($crmProject['image'] ?? 'images/projects/devsuite-crm.svg') }}"
-                                    alt="{{ $crmProject['title'] }} preview"
-                                    class="mirsaar-crm-feature__image"
-                                    loading="lazy"
-                                >
-                            </div>
-                        </div>
-
-                        <div class="mirsaar-crm-feature__badge">{{ $crmProject['result'] ?? 'case study' }}</div>
-                    </div>
-                </div>
-                @endif
-
-                <div class="mirsaar-crm-gallery">
-                    @foreach ($portfolioRows as $rowIndex => $projects)
-                        <div class="mirsaar-crm-gallery-row {{ $rowIndex % 2 === 1 ? 'is-reverse' : '' }}">
-                            <div class="mirsaar-crm-gallery-track">
-                                @for ($copy = 0; $copy < 2; $copy++)
-                                    @foreach ($projects as $project)
-                                        <article
-                                            class="mirsaar-crm-gallery-card mirsaar-work-card--{{ $project['theme'] ?? 'bronze' }}"
-                                            @if ($copy === 1) aria-hidden="true" @endif
-                                        >
-                                            <div class="mirsaar-crm-gallery-card__frame">
-                                                <img
-                                                    src="{{ asset($project['image'] ?? 'images/projects/devsuite-crm.svg') }}"
-                                                    alt="{{ $project['title'] }} preview"
-                                                    class="mirsaar-crm-gallery-card__image"
-                                                    loading="lazy"
-                                                >
-                                            </div>
-
-                                            <div class="mirsaar-crm-gallery-card__caption">
-                                                <p class="mirsaar-crm-gallery-card__label">{{ $project['platform'] ?? $project['label'] }}</p>
-                                                <h3 class="mirsaar-crm-gallery-card__title">{{ $project['title'] }}</h3>
-                                                <div class="mirsaar-crm-gallery-card__meta">
-                                                    @if (! empty($project['client_niche']))
-                                                        <span>{{ $project['client_niche'] }}</span>
-                                                    @endif
-                                                    @if (! empty($project['result']))
-                                                        <strong>{{ $project['result'] }}</strong>
-                                                    @endif
-                                                </div>
-                                            </div>
-                                        </article>
-                                    @endforeach
-                                @endfor
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            </article>
-
-            <article class="mirsaar-contact-strip" id="contact">
-                <div class="mirsaar-contact-strip__head">
-                    <p class="mirsaar-section-kicker">kontaktlar</p>
-                    <h2 class="mirsaar-contact-strip__title">Qaysi kanal qulay bo'lsa, shu yerdan bog'laning.</h2>
-                    <p class="mirsaar-contact-strip__lead">
-                        Telegram, Instagram, WhatsApp, email va lokatsiya admin paneldagi kontakt sozlamalaridan olinadi.
-                        Konsultatsiya yoki brief uchun eng qulay kanalni tanlang.
-                    </p>
-
-                    @if (false)
-                    <p class="mirsaar-section-kicker">контактные профили</p>
-                    <h2 class="mirsaar-contact-strip__title">Готовые контактные карточки для быстрого связи</h2>
-                    <p class="mirsaar-contact-strip__lead">
-                        После карусели основные точки контакта представлены в формате профилей:
-                        понятно, кому писать, с какого потока начать и с какой скоростью ожидать ответ.
-                    </p>
-                    @endif
-                </div>
-
-                <div class="mirsaar-contact-strip__grid">
-                    @foreach ($contactCards as $card)
-                        <a href="{{ $card['href'] }}" class="mirsaar-contact-card">
-                            <span class="mirsaar-contact-card__avatar">{{ $card['initials'] }}</span>
-
-                            <div class="mirsaar-contact-card__copy">
-                                <p class="mirsaar-contact-card__role">{{ $card['role'] }}</p>
-                                <h3 class="mirsaar-contact-card__title">{{ $card['title'] }}</h3>
-                                <strong class="mirsaar-contact-card__value">{{ $card['value'] }}</strong>
-                                <p class="mirsaar-contact-card__meta">{{ $card['meta'] }}</p>
-                            </div>
-                        </a>
-                    @endforeach
-                </div>
-            </article>
-
-            <article class="mirsaar-reviews-section" id="reviews" data-swiper-root>
-                <div class="mirsaar-reviews-section__head">
-                    <div>
-                        <p class="mirsaar-section-kicker">отзывы клиентов</p>
-                        <h2 class="mirsaar-reviews-section__title">Отзывы</h2>
-                        <p class="mirsaar-reviews-section__lead">
-                            Для главной страницы реализован премиальный слайдер: 
-                            стрелки навигации, мягкий autoplay и лёгкая глубина в карточках.
-                        </p>
-                    </div>
-
-                    <div class="mirsaar-reviews-section__controls">
-                        <button type="button" class="mirsaar-reviews-button" data-swiper-prev aria-label="Oldingi sharh">
-                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M15 6L9 12L15 18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
-                            </svg>
-                        </button>
-
-                        <button type="button" class="mirsaar-reviews-button is-next" data-swiper-next aria-label="Keyingi sharh">
-                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                <path d="M9 6L15 12L9 18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-
-                <div class="swiper mirsaar-reviews-swiper" data-swiper data-swiper-variant="reviews">
-                    <div class="swiper-wrapper">
-                        @foreach ($testimonials as $review)
-                            <div class="swiper-slide">
-                                <article class="mirsaar-review-card">
-                                    <div class="mirsaar-review-card__stars" aria-label="{{ $review['rating'] }} yulduz">
-                                        @for ($star = 1; $star <= 5; $star++)
-                                            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                                <path d="M12 4L14.25 8.6L19.3 9.35L15.65 12.9L16.5 17.95L12 15.55L7.5 17.95L8.35 12.9L4.7 9.35L9.75 8.6L12 4Z" fill="currentColor" />
-                                            </svg>
-                                        @endfor
-                                    </div>
-
-                                    <span class="mirsaar-review-card__quote-mark" aria-hidden="true">99</span>
-
-                                    <p class="mirsaar-review-card__quote">{{ $review['quote'] }}</p>
-
-                                    <div class="mirsaar-review-card__author">
-                                        <strong>{{ $review['author'] }}</strong>
-                                        <span>{{ $review['company'] }}</span>
-                                        <small>{{ $review['date'] }}</small>
-                                    </div>
-                                </article>
-                            </div>
-                        @endforeach
-                    </div>
-                </div>
-
-                <div class="mirsaar-reviews-section__pagination" data-swiper-pagination></div>
-            </article>
-
-            <article class="mirsaar-support-panel" id="support">
-                <div class="mirsaar-brand-pattern mirsaar-brand-pattern--tl" aria-hidden="true">
-                    <svg viewBox="0 0 64 64" fill="none">
-                        <circle cx="32" cy="32" r="29" stroke="currentColor" stroke-width="1.8" />
-                        <path d="M18 39L28.5 22H35L25 42" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" />
-                        <path d="M30 42L39 22H46L36.5 42" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" />
-                    </svg>
-                </div>
-                <div class="mirsaar-brand-pattern mirsaar-brand-pattern--tr" aria-hidden="true">
-                    <svg viewBox="0 0 64 64" fill="none">
-                        <circle cx="32" cy="32" r="29" stroke="currentColor" stroke-width="1.8" />
-                        <path d="M18 39L28.5 22H35L25 42" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" />
-                        <path d="M30 42L39 22H46L36.5 42" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" />
-                    </svg>
-                </div>
-                <div class="mirsaar-brand-pattern mirsaar-brand-pattern--bl" aria-hidden="true">
-                    <svg viewBox="0 0 64 64" fill="none">
-                        <circle cx="32" cy="32" r="29" stroke="currentColor" stroke-width="1.8" />
-                        <path d="M18 39L28.5 22H35L25 42" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" />
-                        <path d="M30 42L39 22H46L36.5 42" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" />
-                    </svg>
-                </div>
-                <div class="mirsaar-brand-pattern mirsaar-brand-pattern--br" aria-hidden="true">
-                    <svg viewBox="0 0 64 64" fill="none">
-                        <circle cx="32" cy="32" r="29" stroke="currentColor" stroke-width="1.8" />
-                        <path d="M18 39L28.5 22H35L25 42" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" />
-                        <path d="M30 42L39 22H46L36.5 42" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.4" />
-                    </svg>
-                </div>
-
-                <div class="mirsaar-support-panel__grid">
-                    <div class="mirsaar-support-panel__copy">
-                        <p class="mirsaar-section-kicker">murojaat formasi</p>
-                        <h2 class="mirsaar-support-panel__title">SMM briefni to'ldiring, murojaat admin panelga tushadi.</h2>
-                        <p class="mirsaar-support-panel__lead">
-                            Ism, telefon, biznes niche, kerakli platforma, asosiy maqsad va byudjetni yuboring.
-                            Admin panelda har bir murojaat status bilan kuzatiladi.
-                        </p>
-
-                        <div class="mirsaar-support-panel__points">
-                            <article>
-                                <strong>Platforma aniq</strong>
-                                <span>Instagram, TikTok yoki Telegram bo'yicha ehtiyoj alohida saqlanadi.</span>
-                            </article>
-                            <article>
-                                <strong>Maqsad aniq</strong>
-                                <span>Followers, sales, leads yoki brand awareness admin panelda ko'rinadi.</span>
-                            </article>
-                            <article>
-                                <strong>Brief tayyor</strong>
-                                <span>Byudjet va izoh bilan lead keyingi suhbatga tayyor bo'ladi.</span>
-                            </article>
-                        </div>
-
-                        @if (false)
-                        <p class="mirsaar-section-kicker">обращение к нам</p>
-                        <h2 class="mirsaar-support-panel__title">обращение к нам</h2>
-                        <p class="mirsaar-support-panel__lead">
-                            Оставьте имя, телефон, тип услуги и краткое описание проекта.
-                            Каждое обращение отображается в админ-панели и отслеживается по статусу.
-                        </p>
-
-                        <div class="mirsaar-support-panel__points">
-                            <article>
-                                <strong>Быстрый ответ</strong>
-                                <span>Новый лид сразу поступает в систему, и администратор его видит мгновенно</span>
-                            </article>
-                            <article>
-                                <strong>Выбор услуги</strong>
-                                <span>Вы можете корректно выбрать: лендинг, CRM, админ-панель или поддержку.</span>
-                            </article>
-                            <article>
-                                <strong>Премиальный поток</strong>
-                                <span>Форма, база и админ-часть работают в едином ритме</span>
-                            </article>
-                        </div>
-                        @endif
-                    </div>
-
-                    <div class="mirsaar-support-panel__form-card" id="contact-form">
-                        <div class="mirsaar-support-panel__form-head">
-                            <p class="mirsaar-section-kicker">brief form</p>
-                            <h3>Murojaat qoldiring</h3>
-                            <p>
-                                Xizmat turini tanlang, kontakt qoldiring va loyiha haqida yozing.
-                                Qolgan oqimni shu formdan keyin birga yig'amiz.
-                            </p>
-                        </div>
-
-                        @if ($inquirySent)
-                            <div class="mirsaar-support-success">
-                               Murojaatingiz yuborildi. U admin paneldagi murojaatlar bo'limiga tushdi.
-                            </div>
-
-                            @if (false)
-                            <div class="mirsaar-support-success">
-                               Отправлено. Скоро мы с вами свяжемся.
-                            </div>
-                            @endif
-                        @endif
-
-                        @error('form')
-                            <div class="mirsaar-support-error">{{ $message }}</div>
-                        @enderror
-
-                        <form wire:submit="submitInquiry" class="mirsaar-support-form">
-                            <div class="mirsaar-support-form__grid">
-                                <label class="mirsaar-support-field">
-                                    <span>Xizmat turi</span>
-                                    <select wire:model="service_id">
-                                        <option value="">Tanlang</option>
-                                        @foreach ($serviceOptions as $service)
-                                            <option value="{{ $service['id'] }}">{{ $service['title'] }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('service_id')
-                                        <small>{{ $message }}</small>
-                                    @enderror
-                                </label>
-
-                                <label class="mirsaar-support-field">
-                                    <span>Ism</span>
-                                    <input type="text" wire:model="name" placeholder="Ismingiz">
-                                    @error('name')
-                                        <small>{{ $message }}</small>
-                                    @enderror
-                                </label>
-
-                                <label class="mirsaar-support-field">
-                                    <span>Telefon</span>
-                                    <input type="text" wire:model="phone" placeholder="+998 90 700 00 00">
-                                    @error('phone')
-                                        <small>{{ $message }}</small>
-                                    @enderror
-                                </label>
-
-                                <label class="mirsaar-support-field">
-                                    <span>Biznes / niche</span>
-                                    <input type="text" wire:model="business_niche" placeholder="Beauty salon, kurs, cafe...">
-                                    @error('business_niche')
-                                        <small>{{ $message }}</small>
-                                    @enderror
-                                </label>
-
-                                <label class="mirsaar-support-field">
-                                    <span>Platforma</span>
-                                    <select wire:model="platform">
-                                        <option value="instagram">Instagram</option>
-                                        <option value="tiktok">TikTok</option>
-                                        <option value="telegram">Telegram</option>
-                                    </select>
-                                    @error('platform')
-                                        <small>{{ $message }}</small>
-                                    @enderror
-                                </label>
-
-                                <label class="mirsaar-support-field">
-                                    <span>Maqsad</span>
-                                    <select wire:model="goal">
-                                        <option value="followers">Followers</option>
-                                        <option value="sales">Sales</option>
-                                        <option value="leads">Leads</option>
-                                        <option value="brand_awareness">Brand awareness</option>
-                                    </select>
-                                    @error('goal')
-                                        <small>{{ $message }}</small>
-                                    @enderror
-                                </label>
-
-                                <label class="mirsaar-support-field">
-                                    <span>Qulay aloqa</span>
-                                    <select wire:model="preferred_contact">
-                                        <option value="phone">Telefon</option>
-                                        <option value="telegram">Telegram</option>
-                                        <option value="email">Email</option>
-                                    </select>
-                                    @error('preferred_contact')
-                                        <small>{{ $message }}</small>
-                                    @enderror
-                                </label>
-
-                                <label class="mirsaar-support-field">
-                                    <span>Byudjet</span>
-                                    <input type="text" wire:model="budget_range" placeholder="Masalan: 300$ dan">
-                                    @error('budget_range')
-                                        <small>{{ $message }}</small>
-                                    @enderror
-                                </label>
-
-                                <label class="mirsaar-support-field">
-                                    <span>Email</span>
-                                    <input type="email" wire:model="email" placeholder="ixtiyoriy">
-                                    @error('email')
-                                        <small>{{ $message }}</small>
-                                    @enderror
-                                </label>
-                            </div>
-
-                            <label class="mirsaar-support-field">
-                                <span>Izoh</span>
-                                <textarea wire:model="project_summary" rows="6" placeholder="Biznesingiz, hozirgi holat va kutayotgan natijangizni yozing."></textarea>
-                                @error('project_summary')
-                                    <small>{{ $message }}</small>
-                                @enderror
-                            </label>
-
-                            <label class="mirsaar-support-field">
-                                <span>Qo'shimcha eslatma</span>
-                                <textarea wire:model="note" rows="3" placeholder="Ixtiyoriy"></textarea>
-                                @error('note')
-                                    <small>{{ $message }}</small>
-                                @enderror
-                            </label>
-
-                            <button type="submit" class="mirsaar-button mirsaar-button--primary mirsaar-support-submit">
-                                Yuborish
-                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                    <path d="M7 17L17 7" stroke="currentColor" stroke-linecap="round" stroke-width="2" />
-                                    <path d="M9 7H17V15" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
-                                </svg>
-                            </button>
-                        </form>
-
-                        @if (false)
-                        <form wire:submit="submitInquiry" class="mirsaar-support-form">
-                            <div class="mirsaar-support-form__grid">
-                                <label class="mirsaar-support-field">
-                                    <span>Услуга или раздел</span>
-                                    <select wire:model="service_id">
-                                        <option value="">Выберите</option>
-                                        @foreach ($serviceOptions as $service)
-                                            <option value="{{ $service['id'] }}">{{ $service['title'] }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('service_id')
-                                        <small>{{ $message }}</small>
-                                    @enderror
-                                </label>
-
-                                <label class="mirsaar-support-field">
-                                    <span>Ism</span>
-                                    <input type="text" wire:model="name" placeholder="Ваше имя">
-                                    @error('name')
-                                        <small>{{ $message }}</small>
-                                    @enderror
-                                </label>
-
-                                <label class="mirsaar-support-field">
-                                    <span>Telefon</span>
-                                    <input type="text" wire:model="phone" placeholder="+998 90 700 00 00...">
-                                    @error('phone')
-                                        <small>{{ $message }}</small>
-                                    @enderror
-                                </label>
-
-                                <label class="mirsaar-support-field">
-                                    <span>Email</span>
-                                    <input type="email" wire:model="email" placeholder="hello@example.com">
-                                    @error('email')
-                                        <small>{{ $message }}</small>
-                                    @enderror
-                                </label>
-
-                                <label class="mirsaar-support-field">
-                                    <span>компании</span>
-                                    <input type="text" wire:model="company" placeholder="Название компании">
-                                    @error('company')
-                                        <small>{{ $message }}</small>
-                                    @enderror
-                                </label>
-
-                                <label class="mirsaar-support-field">
-                                    <span>Удобная связь</span>
-                                    <select wire:model="preferred_contact">
-                                        <option value="phone">Телефон</option>
-                                        <option value="telegram">Telegram для связи</option>
-                                        <option value="email">Email</option>
-                                    </select>
-                                    @error('preferred_contact')
-                                        <small>{{ $message }}</small>
-                                    @enderror
-                                </label>
-
-                       <label class="mirsaar-support-field">
-                                <span>Примерный бюджет</span>
-                                <select wire:model="budget_range">
-                                    <option value="flexible">Индивидуальный расчёт</option>
-                                </select>
-                                @error('budget_range')
-                                    <small>{{ $message }}</small>
-                                @enderror
-                            </label>
-                            </div>
-
-                            <label class="mirsaar-support-field">
-                                <span>Proekt haqida</span>
-                                <textarea wire:model="project_summary" rows="6" placeholder="Цель проекта, нужные разделы и дедлайн."></textarea>
-                                @error('project_summary')
-                                    <small>{{ $message }}</small>
-                                @enderror
-                            </label>
-
-                            <button type="submit" class="mirsaar-button mirsaar-button--primary mirsaar-support-submit">
-                                Отправить
-                                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                                    <path d="M7 17L17 7" stroke="currentColor" stroke-linecap="round" stroke-width="2" />
-                                    <path d="M9 7H17V15" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" />
-                                </svg>
-                            </button>
-                        </form>
-                        @endif
-                    </div>
-                </div>
-
-            </article>
-
-            <footer class="mirsaar-footer" id="footer">
-                <div class="mirsaar-footer__grid">
-                    <div class="mirsaar-footer__brand mirsaar-reveal">
-                        <a href="#home" class="mirsaar-footer__brand-link" aria-label="Mirsaar">
-                            <span class="mirsaar-footer__mark" aria-hidden="true">
-                                <svg viewBox="0 0 64 64" fill="none">
-                                    <circle cx="32" cy="32" r="29" stroke="currentColor" stroke-width="2.5" />
-                                    <path d="M18 39L28.5 22H35L25 42" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
-                                    <path d="M30 42L39 22H46L36.5 42" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" />
-                                </svg>
-                            </span>
-
-                            <span class="mirsaar-footer__brand-copy">
-                                <strong>Mirsaar</strong>
-                                <small>SMM mutaxassis vizitkasi</small>
-                            </span>
-                        </a>
-
-                 <p class="mirsaar-footer__lead">
-                     Instagram, TikTok va Telegram uchun strategiya, kontent, target reklama va analitika.
-                     Xizmatlar, keyslar, kontaktlar va murojaatlar admin paneldan boshqariladi.
-                 </p>
-
-                 @if (false)
-                 <p class="mirsaar-footer__lead">
-                     Создаём премиальные сайты, CRM-системы и цифровые презентации 
-                     с сильным первым впечатлением. Каждый элемент прорабатывается для усиления 
-                     ценности бренда.
-                 </p>
-                 @endif
-
-                        <a href="mailto:{{ $siteSettings['email'] ?? 'hello@smm.uz' }}" class="mirsaar-footer__cta">
-                            {{ $siteSettings['email'] ?? 'hello@smm.uz' }}
-                        </a>
-                    </div>
-
-                    <div class="mirsaar-footer__menu mirsaar-reveal mirsaar-reveal--delay-1">
-                        <p class="mirsaar-footer__title">menu</p>
-
-                        @if (false)
-                        <p class="mirsaar-footer__title">меню</p>
-
-                        @endif
-
-                        <nav class="mirsaar-footer__links" aria-label="Footer navigation">
-                            @foreach ($footerMenu as $item)
-                                <a href="{{ $item['href'] }}" class="mirsaar-footer__link">
-                                    {{ $item['label'] }}
-                                </a>
-                            @endforeach
-                        </nav>
-                    </div>
-
-                    <div class="mirsaar-footer__contact mirsaar-reveal mirsaar-reveal--delay-2">
-                        <p class="mirsaar-footer__title">kontakt</p>
-
-                        @if (false)
-                        <p class="mirsaar-footer__title">Связь</p>
-
-                        @endif
-
-                        <div class="mirsaar-footer__contact-list">
-                            @foreach ($footerContacts as $item)
-                                <a href="{{ $item['href'] }}" class="mirsaar-footer__contact-item">
-                                    <span class="mirsaar-footer__contact-icon" aria-hidden="true">
-                                        @if ($item['icon'] === 'mail')
-                                            <svg viewBox="0 0 24 24" fill="none">
-                                                <path d="M4 7H20V17H4V7Z" stroke="currentColor" stroke-linejoin="round" stroke-width="1.8" />
-                                                <path d="M5 8L12 13L19 8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" />
-                                            </svg>
-                                        @elseif ($item['icon'] === 'shield')
-                                            <svg viewBox="0 0 24 24" fill="none">
-                                                <path d="M12 3L19 6V11.8C19 15.1 16.9 18.1 12 21C7.1 18.1 5 15.1 5 11.8V6L12 3Z" stroke="currentColor" stroke-linejoin="round" stroke-width="1.8" />
-                                                <path d="M9.4 11.8L11.3 13.7L14.8 10.2" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" />
-                                            </svg>
-                                        @else
-                                            <svg viewBox="0 0 24 24" fill="none">
-                                                <path d="M12 4L14.2 8.4L19 9.1L15.5 12.5L16.3 17.2L12 14.9L7.7 17.2L8.5 12.5L5 9.1L9.8 8.4L12 4Z" stroke="currentColor" stroke-linejoin="round" stroke-width="1.8" />
-                                            </svg>
-                                        @endif
-                                    </span>
-
-                                    <span class="mirsaar-footer__contact-copy">
-                                        <small>{{ $item['label'] }}</small>
-                                        <strong>{{ $item['value'] }}</strong>
-                                    </span>
-                                </a>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-
-                <div class="mirsaar-footer__bottom">
-                    <p>&copy; {{ now()->year }} Mirsaar. Все права защищены.</p>
-                    <span class="mirsaar-footer__pill">Стандарт конфиденциальности и качества</span>
-                </div>
-            </footer>
-        </section>
+        <div class="profile-card-body">
+          <small>SMM Growth System</small>
+          <strong>@therealshadmanoff</strong>
+          <span>TikTok · Instagram · Telegram</span>
+        </div>
+      </div>
+
+      <div class="float-badge float-badge--tl">
+        <div class="float-badge-icon tiktok">TT</div>
+        <div>
+          <strong>TikTok Reels</strong>
+          <small>Viral kontent strategiya</small>
+        </div>
+      </div>
+
+      <div class="float-badge float-badge--br">
+        <div class="float-badge-icon ig">IG</div>
+        <div>
+          <strong>Instagram Growth</strong>
+          <small>Lead va reach o'sishi</small>
+        </div>
+      </div>
     </div>
+
+  </div>
 </div>
+
+<!-- ABOUT STRIP -->
+<div class="about-strip">
+  <div class="about-strip-inner">
+    <div class="about-quote">
+      Kontent faqat chiroyli ko'rinish emas — u <em>sotuv qilishi</em>, lead olishi va <em>brendni o'stirishi</em> kerak.
+    </div>
+    <div class="about-list">
+      <div class="about-item">
+        <div class="about-dot"></div>
+        <div>
+          <strong>Data-driven kontent</strong>
+          <span>Har bir post analitika asosida rejalashtiriladi — taxmin emas, raqamlar gapiradi.</span>
+        </div>
+      </div>
+      <div class="about-item">
+        <div class="about-dot"></div>
+        <div>
+          <strong>Tizimli yondashuv</strong>
+          <span>Strategiya → kontent plan → prodakshn → nashr → tahlil — hammasi ketma-ket ishlaydi.</span>
+        </div>
+      </div>
+      <div class="about-item">
+        <div class="about-dot"></div>
+        <div>
+          <strong>Natija kafolati</strong>
+          <span>Reach, lead yoki sotuv — maqsad oldindan belgilanadi va hisobot bilan taqdim etiladi.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<div class="services-wrap" id="services">
+  <div class="services-head">
+    <p class="section-kicker">xizmatlar</p>
+    <h2 class="section-title">SMM paket xizmatlar</h2>
+    <p class="section-lead">
+      Strategiyadan tahlilgacha — har bir bosqich aniq maqsadga ulangan. Xizmatlar niche va byudjetga qarab moslashtiriladi.
+    </p>
+  </div>
+
+  <div class="services-grid">
+    <div class="service-card">
+      <div class="service-card-icon">KS</div>
+      <h3>Kontent Strategiya</h3>
+      <p>30 kunlik kontent plan, rubrikalar, posting ritmi, hashtag tadqiqoti va raqobatchilar tahlili bilan.</p>
+      <span class="service-card-price">dan $200</span>
+      <span class="service-benefit">↑ Organik reach +40%</span>
+    </div>
+    <div class="service-card">
+      <div class="service-card-icon">RL</div>
+      <h3>Reels Prodakshn</h3>
+      <p>TikTok va Instagram Reels uchun skript, shooting, montaj va capshon — tayyor post shaklida.</p>
+      <span class="service-card-price">dan $150/video</span>
+      <span class="service-benefit">↑ Video ko'rishlar ×3</span>
+    </div>
+    <div class="service-card">
+      <div class="service-card-icon">TR</div>
+      <h3>Target Reklama</h3>
+      <p>Instagram va TikTok uchun reklama kabineti sozlash, auditoriya segmentatsiyasi, A/B test va optimizatsiya.</p>
+      <span class="service-card-price">dan $300/oy</span>
+      <span class="service-benefit">↓ CPL 2× arzonroq</span>
+    </div>
+    <div class="service-card">
+      <div class="service-card-icon">PB</div>
+      <h3>Personal Brand</h3>
+      <p>Ekspert imidj qurish: bio dizayn, highlights, Linktree, tone of voice va uzoq muddatli kontent yo'nalishi.</p>
+      <span class="service-card-price">dan $250</span>
+      <span class="service-benefit">↑ Ishonch va obro'</span>
+    </div>
+    <div class="service-card">
+      <div class="service-card-icon">AN</div>
+      <h3>Analitika va Hisobot</h3>
+      <p>Oylik reach, engagement, ER, lead va sotuv tahlili — vizual hisobot va keyingi oy rejasi bilan.</p>
+      <span class="service-card-price">dan $100/oy</span>
+      <span class="service-benefit">↑ Qarorlar aniqroq</span>
+    </div>
+    <div class="service-card">
+      <div class="service-card-icon">TG</div>
+      <h3>Telegram Kanal</h3>
+      <p>Telegram kanali uchun kontent plan, postlar, dizayn va a'zolar jalb qilish kampaniyasi.</p>
+      <span class="service-card-price">dan $180/oy</span>
+      <span class="service-benefit">↑ A'zolar organik o'sishi</span>
+    </div>
+  </div>
+</div>
+
+<!-- CASES -->
+<div class="cases-wrap" id="cases">
+  <div class="cases-head">
+    <p class="section-kicker">keyslar / portfolio</p>
+    <h2 class="section-title">SMM Case Studies</h2>
+    <p class="section-lead">
+      Haqiqiy natijalar — oldingi holat, qilingan ish va o'sish ko'rsatkichlari bilan.
+    </p>
+  </div>
+
+  <div class="featured-case">
+    <div>
+      <p class="case-eyebrow">Instagram · Beauty Salon</p>
+      <h3 class="case-title">Beauty studiya uchun Instagram dan oyiga 80+ lead</h3>
+      <p class="case-desc">Toshkentdagi beauty studiya hech qanday tizimli SMM yo'qligidan 3 oy ichida oyiga 80+ lead oladigan kanalga aylandi.</p>
+
+      <div class="case-tags">
+        <span class="case-tag">Beauty & Wellness</span>
+        <span class="case-tag">Instagram</span>
+        <span class="case-tag">Reels + Target</span>
+      </div>
+
+      <div class="case-steps">
+        <div class="case-step">
+          <span>Oldingi holat</span>
+          <p>Profilda tartibsiz postlar, 0 ta Reels, target reklama yo'q, oyiga 2–3 ta so'rovnoma.</p>
+        </div>
+        <div class="case-step">
+          <span>Qilingan ish</span>
+          <p>Kontent strategiya, haftalik 3 ta Reels, target reklama segmentatsiyasi va bio optimallashtirish.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="case-visual">
+      <span class="case-visual-placeholder">Case Preview</span>
+      <div class="case-result-badge">80+ lead/oy</div>
+    </div>
+  </div>
+
+  <div class="mini-cases">
+    <div class="mini-case">
+      <p class="mini-case-platform">TikTok</p>
+      <h3>Fitnes kouch viral Reels kampaniyasi</h3>
+      <div class="mini-case-meta">
+        <span class="mini-case-niche">Health & Fitness</span>
+        <span class="mini-case-result">1.2M ko'rishlar</span>
+      </div>
+    </div>
+    <div class="mini-case">
+      <p class="mini-case-platform">Instagram</p>
+      <h3>Online kurs sotuvini 3× oshirish</h3>
+      <div class="mini-case-meta">
+        <span class="mini-case-niche">Edtech</span>
+        <span class="mini-case-result">Sotuv ×3.1</span>
+      </div>
+    </div>
+    <div class="mini-case">
+      <p class="mini-case-platform">Telegram</p>
+      <h3>Restoran uchun 5000 a'zolik kanal</h3>
+      <div class="mini-case-meta">
+        <span class="mini-case-niche">Food & Café</span>
+        <span class="mini-case-result">5K a'zo / 2 oy</span>
+      </div>
+    </div>
+    <div class="mini-case">
+      <p class="mini-case-platform">Instagram · TikTok</p>
+      <h3>Kiyim brendi uchun personal brand qurilishi</h3>
+      <div class="mini-case-meta">
+        <span class="mini-case-niche">Fashion</span>
+        <span class="mini-case-result">ER 8.4%</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT CHANNELS -->
+<div class="contact-wrap" id="contact">
+  <p class="section-kicker">kontaktlar</p>
+  <h2 class="section-title">Qaysi kanal qulay — shu yerdan yozing.</h2>
+  <p class="section-lead">Telegram, Instagram, WhatsApp yoki email orqali tezkor javob olasiz. Brief uchun qulay kanaldan murojaat qiling.</p>
+
+  <div class="contact-grid">
+    <a href="https://t.me/therealshadmanoff" class="contact-card">
+      <div class="contact-avatar">TG</div>
+      <p class="contact-role">Asosiy kanal</p>
+      <h3 class="contact-title">Telegram</h3>
+      <strong class="contact-value">@therealshadmanoff</strong>
+      <p class="contact-meta">Odatda 1 soat ichida javob</p>
+    </a>
+    <a href="https://instagram.com/therealshadmanoff" class="contact-card">
+      <div class="contact-avatar">IG</div>
+      <p class="contact-role">Instagram DM</p>
+      <h3 class="contact-title">Instagram</h3>
+      <strong class="contact-value">@therealshadmanoff</strong>
+      <p class="contact-meta">DM orqali yozing</p>
+    </a>
+    <a href="https://tiktok.com/@therealshadmanoff" class="contact-card">
+      <div class="contact-avatar">TT</div>
+      <p class="contact-role">TikTok</p>
+      <h3 class="contact-title">TikTok</h3>
+      <strong class="contact-value">@therealshadmanoff</strong>
+      <p class="contact-meta">Keyslar va kontentni kuzating</p>
+    </a>
+    <a href="mailto:hello@shadmanoff.uz" class="contact-card">
+      <div class="contact-avatar">@</div>
+      <p class="contact-role">Email</p>
+      <h3 class="contact-title">Elektron pochta</h3>
+      <strong class="contact-value">hello@shadmanoff.uz</strong>
+      <p class="contact-meta">Brief va taklif uchun</p>
+    </a>
+  </div>
+</div>
+
+<!-- REVIEWS -->
+<div class="reviews-wrap" id="reviews">
+  <div class="reviews-head">
+    <div>
+      <p class="section-kicker">mijozlar sharhlari</p>
+      <h2 class="section-title">Natijalar haqida</h2>
+    </div>
+  </div>
+
+  <div class="reviews-grid">
+    <div class="review-card">
+      <div class="review-stars">
+        <span>★★★★★</span>
+      </div>
+      <p class="review-quote">"Beauty studiyamiz uchun 3 oyda Instagram dan 80+ lead oldik. Kontent strategiyasi va target reklama chindan ishlaydi."</p>
+      <div class="review-author">
+        <strong>Malika N.</strong>
+        <span>Beauty Studio, Toshkent</span>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">
+        <span>★★★★★</span>
+      </div>
+      <p class="review-quote">"TikTok da viral Reels chiqqanidan keyin kurs sotuvim 3 baravarga oshdi. Shadmanoff tizimli ishlaydi — taxmin yo'q, raqamlar bor."</p>
+      <div class="review-author">
+        <strong>Jasur T.</strong>
+        <span>Online Kurs, Edtech</span>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">
+        <span>★★★★★</span>
+      </div>
+      <p class="review-quote">"Telegram kanalimizni 0 dan 5000 a'zogacha olib chiqdi. Har oylik hisobot va keyingi oy rejasi bilan — professional yondashuv."</p>
+      <div class="review-author">
+        <strong>Dilnoza A.</strong>
+        <span>Restoran zanjiri</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CONTACT FORM -->
+<div class="form-wrap" id="contact-form">
+  <div class="form-inner">
+    <div class="form-copy">
+      <p class="section-kicker">murojaat formasi</p>
+      <h2 class="section-title">SMM brief to'ldiring — boshlaylik.</h2>
+      <p class="section-lead">Biznesingiz, platforma va maqsadni yozing. 1 ish kuni ichida aloqaga chiqamiz.</p>
+
+      <div class="form-points">
+        <div class="form-point">
+          <strong>Platforma aniq</strong>
+          <span>Instagram, TikTok yoki Telegram bo'yicha ehtiyoj alohida ko'rib chiqiladi.</span>
+        </div>
+        <div class="form-point">
+          <strong>Maqsad aniq</strong>
+          <span>Followers, sales, leads yoki brand awareness — maqsad oldindan belgilanadi.</span>
+        </div>
+        <div class="form-point">
+          <strong>Brief tayyor</strong>
+          <span>Byudjet va izoh bilan kelgan mijoz tezroq natija oladi.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <h3>Murojaat qoldiring</h3>
+      <p>Xizmat, kontakt va loyiha haqida yozing.</p>
+
+      <div class="field-grid">
+        <div class="field">
+          <label>Xizmat turi</label>
+          <select>
+            <option value="">Tanlang</option>
+            <option>Kontent Strategiya</option>
+            <option>Reels Prodakshn</option>
+            <option>Target Reklama</option>
+            <option>Personal Brand</option>
+            <option>Analitika</option>
+            <option>Telegram Kanal</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Ism</label>
+          <input type="text" placeholder="Ismingiz">
+        </div>
+        <div class="field">
+          <label>Telefon</label>
+          <input type="text" placeholder="+998 90 000 00 00">
+        </div>
+        <div class="field">
+          <label>Biznes / niche</label>
+          <input type="text" placeholder="Beauty, kurs, cafe...">
+        </div>
+        <div class="field">
+          <label>Platforma</label>
+          <select>
+            <option>Instagram</option>
+            <option>TikTok</option>
+            <option>Telegram</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Maqsad</label>
+          <select>
+            <option>Followers</option>
+            <option>Sales</option>
+            <option>Leads</option>
+            <option>Brand awareness</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Qulay aloqa</label>
+          <select>
+            <option>Telegram</option>
+            <option>Telefon</option>
+            <option>Email</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Byudjet</label>
+          <input type="text" placeholder="Masalan: $300 dan">
+        </div>
+      </div>
+
+      <div class="field" style="margin-bottom:14px">
+        <label>Loyiha haqida</label>
+        <textarea rows="4" placeholder="Biznesingiz, hozirgi holat va kutayotgan natijangizni yozing."></textarea>
+      </div>
+
+      <button class="submit-btn">
+        Yuborish →
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <p class="footer-brand-name">@therealshadman<em>off</em></p>
+      <p class="footer-lead">
+        Instagram, TikTok va Telegram uchun kontent strategiya, Reels prodakshn, target reklama va analitika. Har bir xizmat biznes natijaga ulanadi.
+      </p>
+      <a href="mailto:hello@shadmanoff.uz" class="footer-email">hello@shadmanoff.uz</a>
+    </div>
+
+    <div class="footer-col">
+      <h4>Menu</h4>
+      <div class="footer-links">
+        <a href="#services">Xizmatlar</a>
+        <a href="#cases">Keyslar</a>
+        <a href="#reviews">Sharhlar</a>
+        <a href="#contact-form">Brief yuborish</a>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h4>Ijtimoiy tarmoqlar</h4>
+      <div class="footer-links">
+        <a href="https://instagram.com/therealshadmanoff">Instagram</a>
+        <a href="https://tiktok.com/@therealshadmanoff">TikTok</a>
+        <a href="https://t.me/therealshadmanoff">Telegram</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <p>© 2026 @therealshadmanoff. Barcha huquqlar himoyalangan.</p>
+    <span class="footer-pill">SMM · Reels · Target · Analitika</span>
+  </div>
+</footer>
+
+</body>
+</html>
